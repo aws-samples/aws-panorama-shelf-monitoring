@@ -6,7 +6,7 @@ function Header() {
   return (
     <Grid item xs={10}>
       <Typography variant="h2" style={{ textAlign: "center" }}>
-        AWS Panorama | Smart Shelf Blah
+        AWS Panorama | Smart Shelf Demo
       </Typography>
     </Grid>
   );
