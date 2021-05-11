@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartshelf-dev-140549-authRole",
+      "UnauthRoleArn": "arn:aws:iam::446913493325:role/amplify-smartshelf-dev-140549-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::446913493325:role/amplify-smartshelf-dev-140549-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-smartshelf-dev-140549-deployment",
+      "UnauthRoleName": "amplify-smartshelf-dev-140549-unauthRole",
+      "StackName": "amplify-smartshelf-dev-140549",
+      "StackId": "arn:aws:cloudformation:us-east-1:446913493325:stack/amplify-smartshelf-dev-140549/e8330c70-b28b-11eb-a7ab-0ad18c186ef9",
+      "AmplifyAppId": "d3nqfceii88bhy"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3nqfceii88bhy",
+          "type": "cicd"
+        }
+      }
+    }
+  }
+}
