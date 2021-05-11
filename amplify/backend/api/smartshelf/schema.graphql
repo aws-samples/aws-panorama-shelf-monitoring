@@ -12,12 +12,12 @@ type S3Object {
 }
 
 enum ProductType {
-  bottle
+  BOTTLE
 }
 
 enum Threshold {
-  zero
-  one
-  two
-  three
+  ZERO
+  ONE
+  TWO
+  THREE
 }
