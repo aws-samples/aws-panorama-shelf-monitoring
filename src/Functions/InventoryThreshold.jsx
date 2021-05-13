@@ -39,7 +39,7 @@ function InventoryThreshold() {
       console.log("valid thresholds: ", validThresholds);
       dispatch({
         type: "LISTTHRESHOLDS",
-        thresholdList: validThresholds.data.__type.enumValues,
+        thresholdList: validThresholds["data"]["__type"]["enumValues"],
       });
     } catch (err) {
       console.log("error fetching data: ", err);
@@ -76,7 +76,10 @@ function InventoryThreshold() {
   }, []);
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    dispatch({
+      type: "SETTHRESHOLD",
+      threshold: event.target.value,
+    });
   };
 
   return (
