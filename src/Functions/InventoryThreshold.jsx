@@ -7,7 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
-import Amplify, { API } from "aws-amplify";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "../aws-exports";
 import { getShelfMonitor } from "../graphql/queries";
 import { getThresholds } from "../graphql/introspections";
@@ -35,7 +35,9 @@ function InventoryThreshold() {
 
   async function getValidThresholds() {
     try {
-      const validThresholds = await API.graphqlOperation(getThresholds);
+      const validThresholds = await API.graphql(
+        graphqlOperation(getThresholds),
+      );
       console.log("valid thresholds: ", validThresholds);
       dispatch({
         type: "LISTTHRESHOLDS",
@@ -48,9 +50,11 @@ function InventoryThreshold() {
 
   async function getThreshold() {
     try {
-      const threshold = await API.graphqlOperation(getShelfMonitor, {
-        input: "BOTTLE",
-      });
+      const threshold = await API.graphql(
+        graphqlOperation(getShelfMonitor, {
+          input: "BOTTLE",
+        }),
+      );
       if (threshold.data.getShelfMonitor == null) {
         dispatch({
           type: "SETTHRESHOLD",
