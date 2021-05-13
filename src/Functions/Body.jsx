@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 
 function Body() {
   return (
-    <Grid item xs={10}>
+    <Grid item xs={5}>
       <Paper>
         <Typography variant="body1" style={{ textAlign: "center" }}>
           Near-real-time display of shelf

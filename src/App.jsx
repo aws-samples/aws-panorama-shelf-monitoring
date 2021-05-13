@@ -16,7 +16,7 @@ import { Header, Body, InventoryThreshold } from "./Functions";
 function App() {
   return (
     <div>
-      <Grid container justify="center" alignItems="stretch" spacing={8} xs={12}>
+      <Grid container justify="center" alignItems="stretch" spacing={3} xs={12}>
         <Header />
         <Body />
         <InventoryThreshold />
