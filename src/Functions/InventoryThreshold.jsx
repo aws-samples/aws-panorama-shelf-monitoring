@@ -4,11 +4,10 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import Amplify, { API } from "aws-amplify";
 import awsconfig from "../aws-exports";
 import { getShelfMonitor } from "../graphql/queries";
 import { getThresholds } from "../graphql/introspections";
@@ -82,7 +81,7 @@ function InventoryThreshold() {
 
   return (
     <div>
-      <Grid item xs={10}>
+      <Grid item xs={3}>
         <Paper>
           <Typography variant="body1" style={{ textAlign: "center" }}>
             Specify how low the bottle count should be before you get notified
@@ -92,9 +91,13 @@ function InventoryThreshold() {
             <InputLabel>Alert Threshold</InputLabel>
             <Select
               id="select-threshold"
-              value={age}
+              value={state.threshold}
               onChange={handleChange}
-            ></Select>
+            >
+              {state.validThresholds.map((v) => (
+                <MenuItem value={v}>v</MenuItem>
+              ))}
+            </Select>
           </FormControl>
         </Paper>
       </Grid>

@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 // import GridListTile from '@material-ui/core/GridListTile';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { Header, Body } from "./Functions";
+import { Header, Body, InventoryThreshold } from "./Functions";
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
       <Grid container justify="center" alignItems="stretch" spacing={8} xs={12}>
         <Header />
         <Body />
+        <InventoryThreshold />
       </Grid>
     </div>
   );
