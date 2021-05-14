@@ -43,6 +43,7 @@ function Body() {
     ).subscribe({
       next: (eventData) => {
         const data = eventData.value.data.onUpdateShelfMonitor;
+        if (data.s3Uri === null) return;
         dispatch({ type: "S3URI", data });
       },
     });
