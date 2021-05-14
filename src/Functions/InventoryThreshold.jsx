@@ -11,6 +11,7 @@ import { Box, InputLabel } from "@material-ui/core";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "../aws-exports";
 import { getShelfMonitor } from "../graphql/queries";
+import { updateShelfMonitor, createShelfMonitor } from "../graphql/mutations";
 
 Amplify.configure(awsconfig);
 
@@ -41,12 +42,13 @@ function reducer(state, action) {
 function InventoryThreshold() {
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const productType = "BOTTLE";
 
   async function getThreshold() {
     try {
       const threshold = await API.graphql(
         graphqlOperation(getShelfMonitor, {
-          ProductType: "BOTTLE",
+          ProductType: productType,
         }),
       );
       if (threshold.data.getShelfMonitor == null) {
@@ -68,6 +70,35 @@ function InventoryThreshold() {
     }
   }
 
+  async function putThreshold(threshold) {
+    console.log(threshold);
+    try {
+      await API.graphql(
+        graphqlOperation(updateShelfMonitor, {
+          input: {
+            ProductType: productType,
+            Threshold: threshold,
+          },
+        }),
+      );
+    } catch (err) {
+      if (
+        err.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        await API.graphql(
+          graphqlOperation(createShelfMonitor, {
+            input: {
+              ProductType: productType,
+              Threshold: threshold,
+            },
+          }),
+        );
+      } else {
+        console.log(err);
+      }
+    }
+  }
+
   useEffect(() => {
     getThreshold();
   }, []);
@@ -77,6 +108,8 @@ function InventoryThreshold() {
       type: "SETTHRESHOLD",
       threshold: event.target.value,
     });
+
+    putThreshold(event.target.value);
   };
 
   return (
@@ -96,10 +129,10 @@ function InventoryThreshold() {
               value={state.threshold}
               onChange={handleChange}
             >
-              <MenuItem value="ZERO">ZERO</MenuItem>
-              <MenuItem value="ONE">ONE</MenuItem>
-              <MenuItem value="TWO">TWO</MenuItem>
-              <MenuItem value="THREE">THREE</MenuItem>
+              <MenuItem value="0">ZERO</MenuItem>
+              <MenuItem value="1">ONE</MenuItem>
+              <MenuItem value="2">TWO</MenuItem>
+              <MenuItem value="3">THREE</MenuItem>
             </Select>
           </FormControl>
         </Box>

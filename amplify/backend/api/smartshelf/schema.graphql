@@ -1,23 +1,10 @@
 type shelfMonitor @model(timestamps:{updatedAt: "updatedOn"}) @key(fields: ["ProductType"]) {
-  file: S3Object!
-  count: Int!
+  s3Uri: String
+  count: Int
   ProductType: ProductType!
-  Threshold: Threshold!
-}
-
-type S3Object {
-  bucket: String!
-  region: String!
-  key: String!
+  Threshold: Int!
 }
 
 enum ProductType {
   BOTTLE
-}
-
-enum Threshold {
-  ZERO
-  ONE
-  TWO
-  THREE
 }
