@@ -4,11 +4,7 @@
 export const onCreateShelfMonitor = /* GraphQL */ `
   subscription OnCreateShelfMonitor {
     onCreateShelfMonitor {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold
@@ -20,11 +16,7 @@ export const onCreateShelfMonitor = /* GraphQL */ `
 export const onUpdateShelfMonitor = /* GraphQL */ `
   subscription OnUpdateShelfMonitor {
     onUpdateShelfMonitor {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold
@@ -36,11 +28,7 @@ export const onUpdateShelfMonitor = /* GraphQL */ `
 export const onDeleteShelfMonitor = /* GraphQL */ `
   subscription OnDeleteShelfMonitor {
     onDeleteShelfMonitor {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold

@@ -7,11 +7,7 @@ export const createShelfMonitor = /* GraphQL */ `
     $condition: ModelshelfMonitorConditionInput
   ) {
     createShelfMonitor(input: $input, condition: $condition) {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold
@@ -26,11 +22,7 @@ export const updateShelfMonitor = /* GraphQL */ `
     $condition: ModelshelfMonitorConditionInput
   ) {
     updateShelfMonitor(input: $input, condition: $condition) {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold
@@ -45,11 +37,7 @@ export const deleteShelfMonitor = /* GraphQL */ `
     $condition: ModelshelfMonitorConditionInput
   ) {
     deleteShelfMonitor(input: $input, condition: $condition) {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold

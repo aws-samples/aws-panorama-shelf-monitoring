@@ -4,11 +4,7 @@
 export const getShelfMonitor = /* GraphQL */ `
   query GetShelfMonitor($ProductType: ProductType!) {
     getShelfMonitor(ProductType: $ProductType) {
-      file {
-        bucket
-        region
-        key
-      }
+      s3Uri
       count
       ProductType
       Threshold
@@ -33,11 +29,7 @@ export const listShelfMonitors = /* GraphQL */ `
       sortDirection: $sortDirection
     ) {
       items {
-        file {
-          bucket
-          region
-          key
-        }
+        s3Uri
         count
         ProductType
         Threshold
