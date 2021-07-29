@@ -4,9 +4,9 @@ backend:
     preBuild:
       commands:
         - yum install jq -y
-        # - cat amplify/team-provider-info.json | jq '.["master"]["categories"]["function"]["smartshelf72d32494"]["snsTopic"]'=\"${SNS_TOPIC}\" > amplify/team-provider-info_new.json
-        # - rm amplify/team-provider-info.json
-        # - mv amplify/team-provider-info_new.json amplify/team-provider-info.json
+        - cat amplify/backend/function/smartshelf72d32494/parameters.json | jq '.["snsTopic"]'==\"${SNS_TOPIC}\" > backend/function/smartshelf72d32494/parameters_new.json
+        - rm amplify/backend/function/smartshelf72d32494/parameters.json
+        - mv amplify/backend/function/smartshelf72d32494/parameters_new.json amplify/backend/function/smartshelf72d32494/parameters.json
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'
