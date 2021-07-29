@@ -1,8 +1,5 @@
 {
     "master": {
-        "awscloudformation": {
-            "DeploymentBucketName": ""
-        },
         "categories": {
             "function": {
                 "smartshelf72d32494": {
