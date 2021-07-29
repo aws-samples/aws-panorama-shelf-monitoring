@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useReducer } from "react";
 
 import Amplify, { API, graphqlOperation } from "aws-amplify";
-import awsconfig from "../aws-exports";
+import awsconfig from "./../aws-exports";
 import { onUpdateShelfMonitor } from "../graphql/subscriptions";
 
 Amplify.configure(awsconfig);
