@@ -5,8 +5,10 @@ backend:
       commands:
         - yum install jq -y
         - cat amplify/team-provider-info.json | jq '.["master"]["categories"]["function"]["smartshelf72d32494"]["snsTopic"]'=\"${SNS_TOPIC}\" > amplify/team-provider-info_new.json
+        - cat amplify/team-provider-info_new.json | jq '.["master"]["awscloudformation"]["DeploymentBucketName"]'=\"${BUCKET}\" > amplify/team-provider-info_new2.json
         - rm amplify/team-provider-info.json
-        - mv amplify/team-provider-info_new.json amplify/team-provider-info.json
+        - rm amplify/team-provider-info_new.json
+        - mv amplify/team-provider-info_new2.json amplify/team-provider-info.json
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'
