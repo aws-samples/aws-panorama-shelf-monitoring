@@ -23,9 +23,6 @@
         "apismartshelfGraphQLAPIEndpointOutput": {
             "Type": "String",
             "Default": "apismartshelfGraphQLAPIEndpointOutput"
-        },
-        "snsTopic": {
-            "Type": "String"
         }
     },
     "Conditions": {
@@ -81,9 +78,7 @@
                         "REGION": {
                             "Ref": "AWS::Region"
                         },
-                        "SNS_TOPIC": {
-                            "Ref": "snsTopic"
-                        }
+                        "SNS_TOPIC": "{{resolve:ssm:/panorama/snsTopic}}"
                     }
                 },
                 "Role": {
