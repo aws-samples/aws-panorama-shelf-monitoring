@@ -1,12 +1,6 @@
 version: 1
 backend:
   phases:
-    # preBuild:
-    #   commands:
-    #     # - yum install jq -y
-    #     # - cat amplify/backend/function/smartshelf72d32494/parameters.json | jq '.["snsTopic"]'==\"${SNS_TOPIC}\" > amplify/backend/function/smartshelf72d32494/parameters_new.json
-    #     # - rm amplify/backend/function/smartshelf72d32494/parameters.json
-    #     # - mv amplify/backend/function/smartshelf72d32494/parameters_new.json amplify/backend/function/smartshelf72d32494/parameters.json
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'

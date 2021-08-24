@@ -1,4 +1,12 @@
-type shelfMonitor @model(timestamps:{updatedAt: "updatedOn"}) @key(fields: ["ProductType"]) {
+type shelfMonitor
+  @model(timestamps: { updatedAt: "updatedOn" })
+  @key(fields: ["ProductType"])
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey }
+      { allow: public, operations: [update, create, read], provider: iam }
+    ]
+  ) {
   s3Uri: String
   count: Int
   ProductType: ProductType!
