@@ -10,7 +10,7 @@ type shelfMonitor
   s3Uri: String
   count: Int
   ProductType: ProductType!
-  Threshold: Int!
+  Threshold: Int
 }
 
 enum ProductType {

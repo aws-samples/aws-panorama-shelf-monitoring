@@ -1,6 +1,21 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const deleteShelfMonitor = /* GraphQL */ `
+  mutation DeleteShelfMonitor(
+    $input: DeleteShelfMonitorInput!
+    $condition: ModelshelfMonitorConditionInput
+  ) {
+    deleteShelfMonitor(input: $input, condition: $condition) {
+      s3Uri
+      count
+      ProductType
+      Threshold
+      createdAt
+      updatedOn
+    }
+  }
+`;
 export const createShelfMonitor = /* GraphQL */ `
   mutation CreateShelfMonitor(
     $input: CreateShelfMonitorInput!
@@ -22,21 +37,6 @@ export const updateShelfMonitor = /* GraphQL */ `
     $condition: ModelshelfMonitorConditionInput
   ) {
     updateShelfMonitor(input: $input, condition: $condition) {
-      s3Uri
-      count
-      ProductType
-      Threshold
-      createdAt
-      updatedOn
-    }
-  }
-`;
-export const deleteShelfMonitor = /* GraphQL */ `
-  mutation DeleteShelfMonitor(
-    $input: DeleteShelfMonitorInput!
-    $condition: ModelshelfMonitorConditionInput
-  ) {
-    deleteShelfMonitor(input: $input, condition: $condition) {
       s3Uri
       count
       ProductType

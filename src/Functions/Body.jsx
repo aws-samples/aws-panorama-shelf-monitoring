@@ -3,10 +3,10 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 
 import Amplify, { API, graphqlOperation } from "aws-amplify";
-import awsconfig from "./../aws-exports";
+import awsconfig from "../aws-exports";
 import { onUpdateShelfMonitor } from "../graphql/subscriptions";
 
 Amplify.configure(awsconfig);
@@ -24,18 +24,9 @@ const initialState = {
   count: "",
 };
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "S3URI":
-      return { ...state, s3Uri: action.s3Uri, count: action.count };
-    default:
-      return state;
-  }
-}
-
 function Body() {
   const classes = useStyles();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, setstate] = useState(initialState);
 
   useEffect(() => {
     const subscription = API.graphql(
@@ -43,8 +34,11 @@ function Body() {
     ).subscribe({
       next: (eventData) => {
         const data = eventData.value.data.onUpdateShelfMonitor;
-        if (data.s3Uri === null) return;
-        dispatch({ type: "S3URI", data });
+        console.log(data);
+        if (data.s3Uri === null) {
+          console.log("null");
+        }
+        setstate({ s3Uri: data.s3Uri, count: data.count });
       },
     });
     return () => subscription.unsubscribe();

@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, InputLabel } from "@material-ui/core";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
-import awsconfig from "./../aws-exports";
+import awsconfig from "../aws-exports";
 import { getShelfMonitor } from "../graphql/queries";
 import { updateShelfMonitor, createShelfMonitor } from "../graphql/mutations";
 
