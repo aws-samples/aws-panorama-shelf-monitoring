@@ -8,7 +8,7 @@ function Header() {
     <Grid item xs={10}>
       <Paper style={{ margin: 10 }}>
         <Typography variant="h2" style={{ textAlign: "center" }}>
-          AWS Panorama | Smart Shelf Demo
+          AWS Panorama | Shelf Monitoring
         </Typography>
       </Paper>
     </Grid>

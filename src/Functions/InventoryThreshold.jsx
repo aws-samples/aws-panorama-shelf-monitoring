@@ -1,5 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -25,24 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialState = {
-  validThresholds: [],
-  threshold: "",
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "SETTHRESHOLD":
-      return { ...state, threshold: action.threshold };
-    default:
-      return state;
-  }
-}
-
 function InventoryThreshold() {
   const classes = useStyles();
-  const [state, dispatch] = useReducer(reducer, initialState);
   const productType = "BOTTLE";
+
+  const [thresholdState, setThreshold] = React.useState({ threshold: "" });
 
   async function getThreshold() {
     try {
@@ -52,19 +41,13 @@ function InventoryThreshold() {
         }),
       );
       if (threshold.data.getShelfMonitor == null) {
-        dispatch({
-          type: "SETTHRESHOLD",
-          threshold: "",
-        });
+        setThreshold({ threshold: "" });
         return;
       }
 
       const thresholdResult = threshold.data.getShelfMonitor.Threshold;
       console.log("current threshold: ", thresholdResult);
-      dispatch({
-        type: "SETTHRESHOLD",
-        threshold: thresholdResult,
-      });
+      setThreshold({ threshold: thresholdResult });
     } catch (err) {
       console.log("error fetching data: ", err);
     }
@@ -78,6 +61,8 @@ function InventoryThreshold() {
           input: {
             ProductType: productType,
             Threshold: threshold,
+            s3Uri: "./default.png",
+            count: "Waiting for bottles",
           },
         }),
       );
@@ -104,10 +89,7 @@ function InventoryThreshold() {
   }, []);
 
   const handleChange = (event) => {
-    dispatch({
-      type: "SETTHRESHOLD",
-      threshold: event.target.value,
-    });
+    setThreshold({ threshold: event.target.value });
 
     putThreshold(event.target.value);
   };
@@ -126,13 +108,12 @@ function InventoryThreshold() {
             </InputLabel>
             <Select
               id="select-threshold"
-              value={state.threshold}
+              value={thresholdState.threshold}
               onChange={handleChange}
             >
-              <MenuItem value="0">ZERO</MenuItem>
-              <MenuItem value="1">ONE</MenuItem>
-              <MenuItem value="2">TWO</MenuItem>
-              <MenuItem value="3">THREE</MenuItem>
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                <MenuItem value={num}>{num}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Box>
