@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const { unmarshall } = require("@aws-sdk/util-dynamodb");
 const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
+const { Done } = require("@material-ui/icons");
 
 const REGION = process.env.AWS_REGION;
 const sns = new SNSClient({ region: REGION });
@@ -33,6 +34,13 @@ exports.handler = event => {
     const bottleCount = newRecord.count;
     const threshold = newRecord.Threshold;
 
+    if (bottleCount === 9000) {
+      return;
+    }
+
+
+    /* TODO: don't send alert if
+    notification was sent <10 mins ago and if threshold hasn't changed */
     if (bottleCount <= threshold) {
       sendAlert();
     } else {
