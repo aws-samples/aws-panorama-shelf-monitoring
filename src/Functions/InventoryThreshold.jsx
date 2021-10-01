@@ -62,7 +62,7 @@ function InventoryThreshold() {
             ProductType: productType,
             Threshold: threshold,
             s3Uri: "./default.png",
-            count: "Waiting for bottles",
+            count: 9000,
           },
         }),
       );
@@ -97,13 +97,13 @@ function InventoryThreshold() {
   return (
     <Grid item xs={5}>
       <Paper>
-        <Typography variant="body1" style={{ textAlign: "center" }}>
-          Specify how low the bottle count should be before you get notified of
-          a low inventory.
+        <Typography variant="h5" style={{ textAlign: "center", padding: 10 }}>
+          Specify how low the item count should be before you get notified of a
+          low inventory.
         </Typography>
         <Box display="flex" justifyContent="center">
           <FormControl className={classes.formControl}>
-            <InputLabel>
+            <InputLabel style={{ fontSize: 20, color: "#FF9900" }}>
               <em>Alert Threshold</em>
             </InputLabel>
             <Select

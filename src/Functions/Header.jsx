@@ -8,7 +8,8 @@ function Header() {
     <Grid item xs={10}>
       <Paper style={{ margin: 10 }}>
         <Typography variant="h2" style={{ textAlign: "center" }}>
-          AWS Panorama | Shelf Monitoring
+          AWS Panorama |{" "}
+          <span style={{ color: "#FF9900" }}>Shelf Monitoring</span>
         </Typography>
       </Paper>
     </Grid>
