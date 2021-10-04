@@ -143,6 +143,19 @@
                         {
                             "Effect": "Allow",
                             "Action": [
+                                "dynamodb:UpdateItem",
+                                "dynamodb:GetItem",
+                                "dynamodb:PutItem"
+                            ],
+                            "Resource": {
+                                "Fn::ImportValue": {
+                                    "Fn::Sub": "${apismartshelfGraphQLAPIIdOutput}:GetAtt:shelfMonitorTable:Name"
+                                }
+                            }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
                                 "logs:CreateLogGroup",
                                 "logs:CreateLogStream",
                                 "logs:PutLogEvents"
