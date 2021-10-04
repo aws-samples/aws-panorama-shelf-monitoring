@@ -148,9 +148,26 @@
                                 "dynamodb:PutItem"
                             ],
                             "Resource": {
-                                "Fn::ImportValue": {
-                                    "Fn::Sub": "${apismartshelfGraphQLAPIIdOutput}:GetAtt:shelfMonitorTable:Name"
-                                }
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "arn:aws:dynamodb:",
+                                        {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                            "Ref": "AWS::AccountId"
+                                        },
+                                        ":table/",
+                                        {
+                                            "Fn::ImportValue": {
+                                                "Fn::Sub": "${apismartshelfGraphQLAPIIdOutput}:GetAtt:shelfMonitorTable:Name"
+                                            }
+                                        },
+                                        "*"
+                                    ]
+                                ]
                             }
                         },
                         {
