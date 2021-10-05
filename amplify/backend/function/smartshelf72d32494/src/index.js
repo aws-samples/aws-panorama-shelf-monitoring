@@ -50,15 +50,17 @@ exports.handler = event => {
   console.log(JSON.stringify(event, null, 2));
   event.Records.forEach(record => {
     const newRecord = unmarshall(record.dynamodb.NewImage);
-    const oldRecord = unmarshall(record.dynamodb.OldImage);
+    const oldRecord = unmarshall(record.dynamodb.OldImage) || false;
     const tableName = record.eventSourceARN.split("/")[1];
     
     const bottleCount = newRecord.count;
     const threshold = newRecord.Threshold;
 
-    if (oldRecord.Threshold !== newRecord.Threshold) {
-      console.log("Nothing new, just updating the threshold...");
-      return;
+    if (oldRecord !== false) {
+      if (oldRecord.Threshold !== newRecord.Threshold) {
+        console.log("Nothing new, just updating the threshold...");
+        return;
+      }
     }
 
     if (bottleCount === 9000) {
