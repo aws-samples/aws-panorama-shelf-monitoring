@@ -281,6 +281,8 @@
             "Properties": {
                 "BatchSize": 100,
                 "Enabled": true,
+                "MaximumRetryAttempts": 3,
+                "MaximumRecordAgeInSeconds": 60,
                 "EventSourceArn": {
                     "Fn::ImportValue": {
                         "Fn::Sub": "${apismartshelfGraphQLAPIIdOutput}:GetAtt:shelfMonitorTable:StreamArn"
