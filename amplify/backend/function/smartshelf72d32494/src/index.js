@@ -85,7 +85,7 @@ exports.handler = async function (event) {
           await saveAlertTime(tableName, now);
         }
       } else {
-        const now = Date.now();
+        const now = new Date.now();
         console.log("Sending alert because it was never sent");
         await sendAlert(bottleCount, threshold);
         await saveAlertTime(tableName, now);
