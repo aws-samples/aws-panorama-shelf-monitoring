@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable new-cap */
 /* eslint-disable no-console */
 const { unmarshall } = require("@aws-sdk/util-dynamodb");
@@ -11,18 +12,19 @@ const client = new DynamoDBClient({region: REGION});
 const ddbDocClient = DynamoDBDocument.from(client);
 const delay = process.env.DELAY || 10;
 
-function sendAlert(bottleCount, threshold) {
-    sns.send(new PublishCommand({
+async function sendAlert(bottleCount, threshold) {
+  try {
+    const data = await sns.send(new PublishCommand({
       TopicArn: process.env.SNS_TOPIC,
       Message: `The item count is currently ${bottleCount}, and the alert threshold is set to ${threshold}. Please restock as soon as possible.`
-    })).then(data => {
-      console.log("Alert sent successfully!", data);
-    }).catch(err => {
-      console.error(err, err.stack);
-    });
-}
+    }));
+    console.log("Alert sent successfully!", data);
+  } catch (err) {
+    console.error("Error sending alert", err);
+  }
+};
 
-function saveAlertTime(tableName, now) {
+async function saveAlertTime(tableName, now) {
   const params = {
     TableName: tableName,
     Key: {
@@ -34,17 +36,18 @@ function saveAlertTime(tableName, now) {
     },
   };
 
-  ddbDocClient.update(params).then(data => {
+  try {
+    const data = await ddbDocClient.update(params);
     console.log("Alert time saved successfully!", data);
-  }).catch(err => {
-    console.error(err, err.stack);
-  });
-}
+  } catch (err) {
+    console.error("Error saving alert time", err);
+  };
+};
 
-exports.handler = event => {
+exports.handler = async function (event) {
   //eslint-disable-line
   console.log(JSON.stringify(event, null, 2));
-  event.Records.forEach(record => {
+  for (const record of event.Records) {
     const newRecord = unmarshall(record.dynamodb.NewImage);
     if ("OldImage" in record.dynamodb) {
       const oldRecord = unmarshall(record.dynamodb.OldImage);
@@ -64,7 +67,6 @@ exports.handler = event => {
       return;
     }
 
-
     /* TODO: don't send alert if
     notification was sent <10 mins ago and if threshold hasn't changed */
     if (bottleCount <= threshold) {
@@ -77,14 +79,14 @@ exports.handler = event => {
           console.log("Not sending alert because it was sent less than 10 minutes ago");
         } else {
           console.log("Sending alert because it was sent more than 10 minutes ago");
-          sendAlert(bottleCount, threshold);
-          saveAlertTime(tableName, now);
+          await sendAlert(bottleCount, threshold);
+          await saveAlertTime(tableName, now);
         }
       } else {
         const now = Date.now();
         console.log("Sending alert because it was never sent");
-        sendAlert(bottleCount, threshold);
-        saveAlertTime(tableName, now);
+        await sendAlert(bottleCount, threshold);
+        await saveAlertTime(tableName, now);
       }
     };
 
@@ -92,5 +94,5 @@ exports.handler = event => {
     console.log(record.eventName);
     console.log("DynamoDB Record: %j", record.dynamodb);
   });
-  return Promise.resolve("Successfully processed DynamoDB record");
+  return "Successfully processed DynamoDB record";
 };
