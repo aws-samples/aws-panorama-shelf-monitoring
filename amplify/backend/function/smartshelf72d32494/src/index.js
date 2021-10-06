@@ -11,8 +11,7 @@ const client = new DynamoDBClient({region: REGION});
 const ddbDocClient = DynamoDBDocument.from(client);
 const delay = process.env.DELAY || 10;
 
-
-const sendAlert = async (bottleCount, threshold) => {
+async function sendAlert(bottleCount, threshold) {
   try {
     const data = await sns.send(new PublishCommand({
       TopicArn: process.env.SNS_TOPIC,
@@ -24,8 +23,7 @@ const sendAlert = async (bottleCount, threshold) => {
   }
 }
 
-
-const saveAlertTime = async (tableName, now) => {
+async function saveAlertTime(tableName, now) {
   const params = {
     TableName: tableName,
     Key: {
