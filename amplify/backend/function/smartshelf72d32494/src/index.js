@@ -11,19 +11,21 @@ const client = new DynamoDBClient({region: REGION});
 const ddbDocClient = DynamoDBDocument.from(client);
 const delay = process.env.DELAY || 10;
 
-function sendAlert(bottleCount, threshold) {
+async function sendAlert(bottleCount, threshold) {
   try {
-    const data = sns.send(new PublishCommand({
+    const data = await sns.send(new PublishCommand({
       TopicArn: process.env.SNS_TOPIC,
       Message: `The item count is currently ${bottleCount}, and the alert threshold is set to ${threshold}. Please restock as soon as possible.`
     }))
     console.log("Message send successfully!", data);
+    return data;
   } catch (err) {
     console.error(err, err.stack);
+    return err;
   }
 }
 
-function saveAlertTime(tableName, now) {
+async function saveAlertTime(tableName, now) {
   const params = {
     TableName: tableName,
     Key: {
@@ -36,10 +38,12 @@ function saveAlertTime(tableName, now) {
   };
 
   try {
-    const data = ddbDocClient.update(params);
+    const data = await ddbDocClient.update(params);
     console.log("Time saved successfully!", data);
+    return data;
   } catch (err) {
     console.error(err, err.stack);
+    return err;
   }
 }
 
