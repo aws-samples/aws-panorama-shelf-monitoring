@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable func-names */
 /* eslint-disable new-cap */
 /* eslint-disable no-console */
@@ -93,6 +95,5 @@ exports.handler = async function (event) {
     console.log(record.eventID);
     console.log(record.eventName);
     console.log("DynamoDB Record: %j", record.dynamodb);
-  });
-  return "Successfully processed DynamoDB record";
+  };
 };
