@@ -74,7 +74,7 @@ exports.handler = async function (event) {
     if (bottleCount <= threshold) {
       if (newRecord.lastNotificationSent) {
         const lastNotificationTime = new Date(newRecord.lastNotificationSent);
-        const now = new Date.now();
+        const now = Date.now();
         const diff = now - lastNotificationTime;
         const diffMinutes = diff / 1000 / 60;
         if (diffMinutes < delay) {
@@ -85,7 +85,7 @@ exports.handler = async function (event) {
           await saveAlertTime(tableName, now);
         }
       } else {
-        const now = new Date.now();
+        const now = Date.now();
         console.log("Sending alert because it was never sent");
         await sendAlert(bottleCount, threshold);
         await saveAlertTime(tableName, now);
