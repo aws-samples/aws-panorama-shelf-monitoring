@@ -1,0 +1,2 @@
+gql
+requests-aws4auth
