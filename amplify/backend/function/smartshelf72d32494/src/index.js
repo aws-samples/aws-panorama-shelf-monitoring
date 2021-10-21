@@ -10,27 +10,29 @@ const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 
 const REGION = process.env.AWS_REGION;
 const sns = new SNSClient({ region: REGION });
-const client = new DynamoDBClient({region: REGION});
+const client = new DynamoDBClient({ region: REGION });
 const ddbDocClient = DynamoDBDocument.from(client);
-const delay = process.env.DELAY || 10;
+const delay = Number(process.env.DELAY) || 60;
 
 async function sendAlert(bottleCount, threshold) {
   try {
-    const data = await sns.send(new PublishCommand({
-      TopicArn: process.env.SNS_TOPIC,
-      Message: `The item count is currently ${bottleCount}, and the alert threshold is set to ${threshold}. Please restock as soon as possible.`
-    }));
+    const data = await sns.send(
+      new PublishCommand({
+        TopicArn: process.env.SNS_TOPIC,
+        Message: `The item count is currently ${bottleCount}, and the alert threshold is set to ${threshold}. Please restock as soon as possible.`,
+      })
+    );
     console.log("Alert sent successfully!", data);
   } catch (err) {
     console.error("Error sending alert", err);
   }
-};
+}
 
 async function saveAlertTime(tableName, now) {
   const params = {
     TableName: tableName,
     Key: {
-      "ProductType": "BOTTLE",
+      ProductType: "BOTTLE",
     },
     UpdateExpression: "set lastNotificationSent = :a",
     ExpressionAttributeValues: {
@@ -43,8 +45,8 @@ async function saveAlertTime(tableName, now) {
     console.log("Alert time saved successfully!", data);
   } catch (err) {
     console.error("Error saving alert time", err);
-  };
-};
+  }
+}
 
 exports.handler = async function (event) {
   //eslint-disable-line
@@ -59,10 +61,9 @@ exports.handler = async function (event) {
       }
     }
     const tableName = record.eventSourceARN.split("/")[1];
-    
+
     const bottleCount = newRecord.count;
     const threshold = newRecord.Threshold;
-
 
     if (bottleCount === 9000) {
       // magic count value when updating a threshold.
@@ -76,11 +77,15 @@ exports.handler = async function (event) {
         const lastNotificationTime = new Date(newRecord.lastNotificationSent);
         const now = Date.now();
         const diff = now - lastNotificationTime;
-        const diffMinutes = diff / 1000 / 60;
+        const diffMinutes = diff / 1000;
         if (diffMinutes < delay) {
-          console.log("Not sending alert because it was sent less than 10 minutes ago");
+          console.log(
+            "Not sending alert because it was sent less than 10 minutes ago"
+          );
         } else {
-          console.log("Sending alert because it was sent more than 10 minutes ago");
+          console.log(
+            "Sending alert because it was sent more than 10 minutes ago"
+          );
           await sendAlert(bottleCount, threshold);
           await saveAlertTime(tableName, now);
         }
@@ -90,10 +95,10 @@ exports.handler = async function (event) {
         await sendAlert(bottleCount, threshold);
         await saveAlertTime(tableName, now);
       }
-    };
+    }
 
     console.log(record.eventID);
     console.log(record.eventName);
     console.log("DynamoDB Record: %j", record.dynamodb);
-  };
+  }
 };
