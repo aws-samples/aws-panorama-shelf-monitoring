@@ -54,7 +54,7 @@ function Body() {
     <Grid item xs={5}>
       <Paper>
         <Typography variant="h5" style={{ textAlign: "center", padding: 10 }}>
-          Near-real-time display of shelf
+          Shelf Display
         </Typography>
         <img src={shelf.s3Uri} alt="Detections" className={classes.image} />
 

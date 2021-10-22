@@ -19,6 +19,19 @@ mutation MyMutation($s3Uri: String, $ProductType: ProductType = BOTTLE, $count: 
 }
 """
 
+create_bottle_query = """
+mutation MyMutation($s3Uri: String, $ProductType: ProductType = BOTTLE, $Threshold: 3, $count: Int) {
+    createShelfMonitor(input: {s3Uri: $s3Uri, ProductType: $ProductType, count: $count}) {
+        count
+        Threshold
+        s3Uri
+        ProductType
+        createdAt
+        updatedOn
+    }
+}
+"""
+
 s3 = boto3.client("s3")
 
 
@@ -35,8 +48,19 @@ def handler(event, context):
 
         values = {"s3Uri": presigned_url, "count": product_count}
 
-        mutation = gql_client.execute(
-            gql_resource.return_gql(gql_query), variable_values=values
-        )
-        print(mutation)
+        try:
+            mutation = gql_client.execute(
+                gql_resource.return_gql(gql_query), variable_values=values
+            )
+            print(mutation)
+        except Exception as e:
+            try:
+                mutation = gql_client.execute(
+                    gql_resource.return_gql(create_bottle_query), variable_values=values
+                )
+                print(mutation)
+            except Exception as ee:
+                print(ee)
+                raise ee
+
     return

@@ -14,12 +14,14 @@ const client = new DynamoDBClient({ region: REGION });
 const ddbDocClient = DynamoDBDocument.from(client);
 const delay = Number(process.env.DELAY) || 60;
 
-async function sendAlert(bottleCount, threshold) {
+// eslint-disable-next-line no-unused-vars
+async function sendAlert(bottleCount, _threshold) {
   try {
     const data = await sns.send(
       new PublishCommand({
         TopicArn: process.env.SNS_TOPIC,
-        Message: `The item count is currently ${bottleCount}, and the alert threshold is set to ${threshold}. Please restock as soon as possible.`,
+        Message: `Only ${bottleCount} water bottle(s) left in shelf 23. Please refill as soon as possible.`,
+        Subject: "Out of Stock Notification",
       })
     );
     console.log("Alert sent successfully!", data);
