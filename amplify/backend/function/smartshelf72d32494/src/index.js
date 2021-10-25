@@ -12,7 +12,6 @@ const REGION = process.env.AWS_REGION;
 const sns = new SNSClient({ region: REGION });
 const client = new DynamoDBClient({ region: REGION });
 const ddbDocClient = DynamoDBDocument.from(client);
-const delay = Number(process.env.DELAY) || 60;
 
 // eslint-disable-next-line no-unused-vars
 async function sendAlert(bottleCount, _threshold) {
@@ -20,7 +19,7 @@ async function sendAlert(bottleCount, _threshold) {
     const data = await sns.send(
       new PublishCommand({
         TopicArn: process.env.SNS_TOPIC,
-        Message: `Only ${bottleCount} water bottle(s) left in shelf 23. Please refill as soon as possible.`,
+        Message: `Only ${bottleCount} bottle(s) left in shelf which is less than threshold you defined. Please refill as soon as possible.`,
         Subject: "Out of Stock Notification",
       })
     );
@@ -30,31 +29,12 @@ async function sendAlert(bottleCount, _threshold) {
   }
 }
 
-async function saveAlertTime(tableName, now) {
-  const params = {
-    TableName: tableName,
-    Key: {
-      ProductType: "BOTTLE",
-    },
-    UpdateExpression: "set lastNotificationSent = :a",
-    ExpressionAttributeValues: {
-      ":a": now,
-    },
-  };
-
-  try {
-    const data = await ddbDocClient.update(params);
-    console.log("Alert time saved successfully!", data);
-  } catch (err) {
-    console.error("Error saving alert time", err);
-  }
-}
-
 exports.handler = async function (event) {
   //eslint-disable-line
-  console.log(JSON.stringify(event, null, 2));
+  // console.log(JSON.stringify(event, null, 2));
   for (const record of event.Records) {
     const newRecord = unmarshall(record.dynamodb.NewImage);
+
     if ("OldImage" in record.dynamodb) {
       const oldRecord = unmarshall(record.dynamodb.OldImage);
       if (oldRecord.Threshold !== newRecord.Threshold) {
@@ -62,8 +42,8 @@ exports.handler = async function (event) {
         return;
       }
     }
-    const tableName = record.eventSourceARN.split("/")[1];
 
+    const tableName = record.eventSourceARN.split("/")[1];
     const bottleCount = newRecord.count;
     const threshold = newRecord.Threshold;
 
@@ -72,30 +52,33 @@ exports.handler = async function (event) {
       return;
     }
 
-    /* TODO: don't send alert if
-    notification was sent <10 mins ago and if threshold hasn't changed */
     if (bottleCount <= threshold) {
-      if (newRecord.lastNotificationSent) {
-        const lastNotificationTime = new Date(newRecord.lastNotificationSent);
-        const now = Date.now();
-        const diff = now - lastNotificationTime;
-        const diffMinutes = diff / 1000;
-        if (diffMinutes < delay) {
-          console.log(
-            "Not sending alert because it was sent less than 10 minutes ago"
-          );
+      // Alert Sending logic...
+
+      if ("OldImage" in record.dynamodb) {
+        const oldRecord = unmarshall(record.dynamodb.OldImage);
+        if (oldRecord.count !== "undefined" || oldRecord.count != "") {
+          if (oldRecord.count != bottleCount) {
+            console.log(
+              "Sending alert because old bottle count is different than new bottle count"
+            );
+            await sendAlert(bottleCount, threshold);
+          } else {
+            console.log(
+              "Not sending alert because old bottle count is same as new bottle count and alert has already been sent"
+            );
+          }
         } else {
           console.log(
-            "Sending alert because it was sent more than 10 minutes ago"
+            "Sending alert for the first time since bottle count is less than threshold"
           );
           await sendAlert(bottleCount, threshold);
-          await saveAlertTime(tableName, now);
         }
       } else {
-        const now = Date.now();
-        console.log("Sending alert because it was never sent");
+        console.log(
+          "Sending alert for the first time since bottle count is less than threshold"
+        );
         await sendAlert(bottleCount, threshold);
-        await saveAlertTime(tableName, now);
       }
     }
 
