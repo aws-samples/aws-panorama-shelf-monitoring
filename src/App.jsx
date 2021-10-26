@@ -2,7 +2,7 @@
 // import logo from './logo.svg';
 import "./App.css";
 
-import "fontsource-roboto";
+import "@fontsource/roboto";
 // import { Button, Input, FormControl, Select, MenuItem, Link } from '@material-ui/core';
 // import { withStyles, lighten } from "@material-ui/core/styles";
 
