@@ -12,28 +12,13 @@
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "",
-    "@testing-library/react": "",
-    "@testing-library/user-event": "",
-    "eslint": "",
-    "eslint-config-prettier": "",
-    "eslint-plugin-import": "",
-    "eslint-plugin-jsx-a11y": "",
-    "eslint-plugin-react": "",
-    "eslint-plugin-react-hooks": "",
-    "react-scripts": ""
+    "react-scripts": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
