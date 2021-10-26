@@ -72,8 +72,7 @@
                         "REGION": {
                             "Ref": "AWS::Region"
                         },
-                        "SNS_TOPIC": "{{resolve:ssm:/panorama/snsTopic}}",
-                        "DELAY": "{{resolve:ssm:/panorama/snsDelay}}"
+                        "SNS_TOPIC": "{{resolve:ssm:/panorama/snsTopic}}"
                     }
                 },
                 "Role": {
