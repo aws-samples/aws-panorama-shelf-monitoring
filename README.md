@@ -4,6 +4,8 @@ This repository contains sample code and deployment scripts to run the Shelf Mon
 
 Please visit the blog post to follow the step-by-step deployment instructions.
 
+https://aws.amazon.com/blogs/machine-learning/build-a-shelf-monitoring-application-using-aws-panorama/
+
 ### Authors:
 Amit Murkherjee, Sr. Partner Solutions Architect
 
