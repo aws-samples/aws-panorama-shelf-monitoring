@@ -5,8 +5,8 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.34.0",
-    "@aws-sdk/client-sns": "^3.15.0",
+    "@aws-sdk/client-dynamodb": "^3.351.0",
+    "@aws-sdk/client-sns": "^3.350.0",
     "@aws-sdk/lib-dynamodb": "^3.34.0",
     "@aws-sdk/util-dynamodb": "^3.15.0"
   }
